@@ -1,0 +1,86 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Task2_3.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Task2_3.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Шахматные фигуры">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Список шахматных фигур -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Шахматные фигуры" FontWeight="Bold" Margin="0,0,0,10"/>
+            <ComboBox ItemsSource="{Binding Pieces}" 
+                      SelectedItem="{Binding SelectedPiece}" 
+                      Width="300" 
+                      HorizontalAlignment="Left"/>
+        </StackPanel>
+        
+        <!-- Ввод позиции назначения -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,20">
+            <TextBlock Text="Целевая позиция" FontWeight="Bold" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="Ряд (0-7):" VerticalAlignment="Center"/>
+                <NumericUpDown Value="{Binding TargetRow}" 
+                              Minimum="0" 
+                              Maximum="7" 
+                              Width="120"
+                              IsEnabled="{Binding CanSelectTargetPosition}"/>
+                
+                <TextBlock Text="Столбец (0-7):" VerticalAlignment="Center"/>
+                <NumericUpDown Value="{Binding TargetColumn}" 
+                              Minimum="0" 
+                              Maximum="7" 
+                              Width="120"
+                              IsEnabled="{Binding CanSelectTargetPosition}"/>
+                
+                <Button Content="Переместить" 
+                        Command="{Binding MoveCommand}" 
+                        Width="100"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <!-- Визуализация шахматной доски -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- Результат хода -->
+            <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Margin="0,0,10,0">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Результат хода:" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding MoveResult}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Состояние шахматной доски -->
+            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" Margin="10,0,0,0">
+                <StackPanel Margin="10">
+                    <TextBlock Text="Состояние шахматной доски:" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding ChessboardState}" FontFamily="Consolas" TextWrapping="NoWrap"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        
+        <!-- Легенда -->
+        <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Margin="0,20,0,0" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Легенда:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock Text="WQ - Белый Ферзь, BR - Черная Ладья, WB - Белый Слон и т.д." Margin="0,0,0,5"/>
+                <TextBlock Text="Ряды 0-7 соответствуют шахматным рядам 8-1, Столбцы 0-7 соответствуют A-H." Margin="0,0,0,5"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
